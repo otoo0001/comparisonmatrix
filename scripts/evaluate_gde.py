@@ -53,7 +53,7 @@ def main():
     groundwater_discharge = pcr.readmap("/scratch/depfg/otoo0001/pcrglobwb_gmglob_30sec_demo/australia_scenario_2/steady-state_only/maps/baseflow_1958-01-01.ini.map")
     
     # pixels that are classified as groundwater dependent ecosystems based on the model
-    gde_based_on_model = pcr.ifthen(groundwater_depth lt 10.0, pcr.boolean(1.0))
+    gde_based_on_model = pcr.ifthen(groundwater_depth < 10.0, pcr.boolean(1.0))
     # ~ gde_based_on_model = pcr.cover(gde_based_on_model, pcr.ifthen(groundwater_discharge lt XX.X, pcr.boolean(1.0)))
     
     # convert the reference and model classification array to nummpy
