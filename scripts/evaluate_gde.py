@@ -61,4 +61,5 @@ def main():
     np_gde_based_on_model = pcr.pcr2numpy(gde_based_on_model, 0)
     
     hit_rate_score = hit_rate(np_reference_raster, np_gde_based_on_model)
+    print("test")
     print(hit_rate_score)   
