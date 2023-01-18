@@ -87,7 +87,7 @@ def main():
                                       cloneMapFileName = clone_map, \
                                       tmpDir = tmp_directory)
     # - threshold (m), below it, we assume as 
-    river_width_threshold = 10. 
+    river_width_threshold = 25. 
     # - extent of rivers
     river_extent = pcr.ifthen(river_width > river_width_threshold, pcr.boolean(1.0)) 
     # - pcr-globwb water body types
