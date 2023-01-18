@@ -76,6 +76,7 @@ def main():
     reference_raster      = vos.readPCRmapClone(v = reference_raster_file, \
                                                 cloneMapFileName = clone_map, \
                                                 tmpDir = tmp_directory)
+    reference_raster      = pcr.ifthen(reference_raster, reference_raster)
 
     
     # read the aquatic extent based on the extents of PCR-GLOBWB rivers, lakes and reservoirs
@@ -123,13 +124,13 @@ def main():
     print("hit rate")
     print(hit_rate_score)   
 
-    false_alarm_rate = false_alarm_rate(np_reference_raster, np_gde_based_on_model)
+    false_alarm_rate_score = false_alarm_rate(np_reference_raster, np_gde_based_on_model)
     print("false_alarm_rate")
-    print(false_alarm_rate)   
+    print(false_alarm_rate_score)   
 
-    critical_success = critical_success(np_reference_raster, np_gde_based_on_model)
-    print("critical_success")
-    print(false_alarm_rate)   
+    critical_success_index = critical_success(np_reference_raster, np_gde_based_on_model)
+    print("critical_success_index")
+    print(critical_success_index)   
         
 if __name__ == '__main__':
     sys.exit(main())
