@@ -71,6 +71,7 @@ def main():
 
     # the REFERENCE map
     # ~ reference_raster  = pcr.readmap("/scratch/depfg/sutan101/data/gde_australia/example/aquatic_boolean.map")
+    print("reading the reference map")
     reference_raster_file = "/scratch/depfg/otoo0001/comparison_matrix/shapefiles/aquatic/aquatic_boolean.map"
     reference_raster      = vos.readPCRmapClone(v = reference_raster_file, \
                                                 cloneMapFileName = clone_map, \
@@ -78,6 +79,7 @@ def main():
 
     
     # read the aquatic extent based on the extents of PCR-GLOBWB rivers, lakes and reservoirs
+    print("set the aquatic extent")
     # - river width (m) file based on PCR-GLOBWB
     river_width_file = "/scratch/depfg/sutan101/data/pcrglobwb_input_arise/develop/global_30sec/routing/channel_properties/version_2021-02-XX/maps_covered_with_zero/bankfull_width_channel_parameters_30sec_february_2021_global_covered_with_zero.nc"
     river_width = vos.readPCRmapClone(v = river_width_file, \
@@ -94,7 +96,7 @@ def main():
                                           tmpDir = tmp_directory)
     lake_and_reservoir_extent = pcr.ifthen(water_body_type > 0.0, pcr.boolean(1.0))
     # - aquatic extent                                     
-    aquatic_extent = pcr.cover(lake_extent, lake_and_reservoir_extent)
+    aquatic_extent = pcr.cover(river_extent, lake_and_reservoir_extent)
     # - make sure that the reference_raster is included in aquatic_exent
     aquatic_extent = pcr.cover(aquatic_extent, reference_raster)
     aquatic_extent = pcr.ifthen(aquatic_extent, aquatic_extent)
