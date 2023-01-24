@@ -52,6 +52,7 @@ def main():
 
     # output directory
     output_directory = "/scratch/depfg/otoo0001/test_nicole/"
+    output_directory = "/scratch/depfg/sutan101/test_nicole_with_plot/"
     cleanOutputDir = False
     if cleanOutputDir:
         try: 
@@ -63,11 +64,14 @@ def main():
     except: 
         pass # for new outputDir (not exist yet)
     
+    # output pcraster map file name
+    pcraster_out_filename = "test.map"
+    pcraster_out_filename = output_directory + "/" + pcraster_out_filename
+    
     # temporary directory
     tmp_directory = output_directory + "/tmp/"
     if os.path.exists(tmp_directory): shutil.rmtree(tmp_directory)
     os.makedirs(tmp_directory)
-    
 
     # the REFERENCE map
     # ~ reference_raster  = pcr.readmap("/scratch/depfg/sutan101/data/gde_australia/example/aquatic_boolean.map")
@@ -130,7 +134,27 @@ def main():
 
     critical_success_index = critical_success(np_reference_raster, np_gde_based_on_model)
     print("critical_success_index")
-    print(critical_success_index)   
+    print(critical_success_index)
+    
+    # plot evaluation map
+    print("plot evaluation map")
+    model_only = pcr.ifthen(gde_based_on_model , pcr.ifthenelse(pcr.cover(reference_raster, pcr.boolean(0.0)), pcr.boolean(0.0), pcr.boolean(1.0)))
+    model_only = pcr.ifthen(model_only, model_only)
+    refer_only = pcr.ifthen(reference_raster, pcr.ifthenelse(pcr.cover(gde_based_on_model , pcr.boolean(0.0)) , pcr.boolean(0.0), pcr.boolean(1.0)))
+    refer_only = pcr.ifthen(refer_only, refer_only)
+    both_agree = pcr.ifthen(gde_based_on_model , pcr.ifthenelse(pcr.cover(reference_raster, pcr.boolean(0.0)), pcr.boolean(1.0), pcr.boolean(0.0)))
+    both_agree = pcr.ifthen(both_agree, both_agree)
+    
+    # plot in values
+    refer_only_class = pcr.ifthen(refer_only, pcr.scalar(-1.0))
+    both_agree_class = pcr.ifthen(both_agree, pcr.scalar( 0.0))
+    model_only_class = pcr.ifthen(model_only, pcr.scalar( 1.0))
+    all_classes      = pcr.cover(refer_only_class, both_agree_class)
+    all_classes      = pcr.cover(all_classes     , model_only_class)
+    pcr.aguila(all_classes)
+    
+    # plot and save the map in a file
+    pcr.report(all_classes, pcraster_out_filename)
         
 if __name__ == '__main__':
     sys.exit(main())
