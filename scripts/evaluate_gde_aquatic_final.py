@@ -51,8 +51,8 @@ def main():
     clone_map = "/scratch/depfg/sutan101/data/pcrglobwb_input_arise/develop/global_30sec/cloneMaps/australia_30sec.map"
 
     # output directory
-    output_directory = "/scratch/depfg/otoo0001/test_nicole/"
-    output_directory = "/scratch/depfg/sutan101/test_nicole_with_plot/"
+    output_directory = "/scratch/depfg/otoo0001/test_nicole_with_plot/"
+#   output_directory = "/scratch/depfg/sutan101/test_nicole_with_plot/"
     cleanOutputDir = False
     if cleanOutputDir:
         try: 
@@ -65,7 +65,7 @@ def main():
         pass # for new outputDir (not exist yet)
     
     # output pcraster map file name
-    pcraster_out_filename = "test.map"
+    pcraster_out_filename = "phreatophytes_discharge0.map"
     pcraster_out_filename = output_directory + "/" + pcraster_out_filename
     
     # temporary directory
@@ -113,7 +113,7 @@ def main():
     
     # pixels that are classified as groundwater dependent ecosystems based on the model
     gde_based_on_model_depth        = pcr.ifthen(groundwater_depth < 30.0, pcr.boolean(1.0))
-    gde_based_on_model_gw_discharge = pcr.ifthen(groundwater_discharge > 0.0005, pcr.boolean(1.0))
+    gde_based_on_model_gw_discharge = pcr.ifthen(groundwater_discharge > 0.000, pcr.boolean(1.0))
     gde_based_on_model              = pcr.cover(gde_based_on_model_depth, gde_based_on_model_gw_discharge)
     
     # focus our analysis on the aquatic_extent only
